@@ -15,9 +15,9 @@ app.use(cookieParser());
 app.use(express.static("app/public"));
 
 //Set app config
-const title = process.env.TITLE;
+const title = process.env.TITLE || 'Synced database';
 const port = process.env.PORT;
-const baseUrl = process.env.URL + port;
+const baseUrl = process.env.URL + port || 3000;
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 
 require('./app/router/router.js')(app);
 
-app.listen(port, () => console.log(title + " run on " + baseUrl));
+app.listen(port, () => console.log(title + " run on port " + baseUrl));
 
 // db.sequelize.sync().then(() => {
 //     // create_roles();
