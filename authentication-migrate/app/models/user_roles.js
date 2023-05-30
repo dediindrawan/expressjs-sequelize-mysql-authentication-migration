@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class User_Roles extends Model {
     static associate(models) {
       // define association here
-    }
+    };
   }
   User_Roles.init({
     roleid: DataTypes.INTEGER,
