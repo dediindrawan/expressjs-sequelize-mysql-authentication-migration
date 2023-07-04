@@ -1,24 +1,23 @@
 'use strict';
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('User_Roles', {
-      roleid: {
+    await queryInterface.createTable('userRoles', {
+      roleId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Roles',
-          key: 'id',
-          as: 'roleid'
+          model: 'roles',
+          key: 'id'
         },
         onDelete: 'CASCADE',
         onUpdate: 'RESTRICT'
       },
-      userid: {
-        type: Sequelize.STRING,
+      userId: {
+        type: Sequelize.INTEGER,
         references: {
-          model: 'Users',
-          key: 'id',
-          as: 'userid'
+          model: 'users',
+          key: 'id'
         },
         onDelete: 'CASCADE',
         onUpdate: 'RESTRICT'
@@ -31,9 +30,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('User_Roles');
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+    await queryInterface.dropTable('userRoles');
   }
 };

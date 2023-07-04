@@ -15,9 +15,9 @@ app.use(cookieParser());
 app.use(express.static("app/public"));
 
 //Set app config
-const title = process.env.TITLE || 'Synced database';
-const port = process.env.PORT;
-const baseUrl = process.env.URL + port || 3000;
+const title = process.env.TITLE || 'Authentication Migration';
+const port = process.env.PORT || 3000;
+const baseUrl = process.env.URL || 'port:' + port;
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -32,29 +32,27 @@ app.use((req, res, next) => {
     next();
 });
 
-
 require('./app/router/router.js')(app);
 
-app.listen(port, () => console.log(title + " run on port " + baseUrl));
+app.listen(port, () => console.log(title + " run on " + baseUrl));
 
 // db.sequelize.sync().then(() => {
 //     // create_roles();
-//     app.listen(port, () => console.log(title + " run on " + baseUrl))
 // });
 
-// function create_roles(){
-// 	db.role.create({
-// 		id: 1,
-// 		name: "USER"
-// 	});
-	
-// 	db.role.create({
-// 		id: 2,
-// 		name: "ADMIN"
-// 	});
-	
-// 	db.role.create({
-// 		id: 3,
-// 		name: "PM"
-// 	});
+// function create_roles() {
+//     db.role.create({
+//         id: 1,
+//         name: "USER"
+//     });
+
+//     db.role.create({
+//         id: 2,
+//         name: "ADMIN"
+//     });
+
+//     db.role.create({
+//         id: 3,
+//         name: "PM"
+//     });
 // }

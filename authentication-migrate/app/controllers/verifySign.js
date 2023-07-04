@@ -10,8 +10,8 @@ module.exports = {
 	signup(req, res) {
 		return User
 			.create({
-				name: req.body.name,
 				id: req.body.id,
+				name: req.body.name,
 				email: req.body.email,
 				password: bcrypt.hashSync(req.body.password, 8)
 			}).then(user => {

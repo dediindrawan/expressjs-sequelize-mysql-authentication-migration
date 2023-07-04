@@ -11,9 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.Status);
+      User.belongsToMany(models.Role, {
+        foreignKey: 'userId',
+        through: 'userRoles',
+      })
     }
   }
   User.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true
+    },
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING
