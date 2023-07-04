@@ -5,9 +5,8 @@ module.exports = {
     await queryInterface.createTable('Statuses', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       title: {
         type: Sequelize.STRING
@@ -16,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         references: {
           model: 'users',
           key: 'id'

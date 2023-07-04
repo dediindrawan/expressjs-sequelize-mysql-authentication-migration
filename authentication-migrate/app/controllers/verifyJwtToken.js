@@ -6,6 +6,8 @@ module.exports = {
 	verifyToken(req, res, next) {
 		let tokenHeader = req.headers['x-access-token'];
 
+		console.log('Token Header:', tokenHeader);
+
 		if (tokenHeader.split(' ')[0] !== 'Bearer') {
 			return res.status(500).send({
 				auth: false,
@@ -41,6 +43,7 @@ module.exports = {
 		User.findByPk(req.userId)
 			.then(user => {
 				user.getRoles().then(roles => {
+					console.log('User Roles:', roles);
 					for (let i = 0; i < roles.length; i++) {
 						console.log(roles[i].name);
 						if (roles[i].name.toUpperCase() === "ADMIN") {

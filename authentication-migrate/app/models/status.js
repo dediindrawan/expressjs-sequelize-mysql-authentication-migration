@@ -15,12 +15,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   Status.init({
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       primaryKey: true
     },
     title: DataTypes.STRING,
     body: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Status',

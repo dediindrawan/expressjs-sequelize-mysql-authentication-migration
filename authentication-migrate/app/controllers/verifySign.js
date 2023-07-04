@@ -48,54 +48,63 @@ module.exports = {
 	},
 
 	signin(req, res) {
-		return User
-			.findOne({
-				where: {
-					id: req.body.id
-				}
-			}).then(user => {
-				if (!user) {
-					return res.status(404).send({
-						auth: false,
-						id: req.body.id,
-						accessToken: null,
-						message: "Error",
-						errors: "User Not Found."
-					});
-				}
+		// console.log('ID yang diterima:', req.body.id);
 
-				var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-				if (!passwordIsValid) {
-					return res.status(401).send({
-						auth: false,
-						id: req.body.id,
-						accessToken: null,
-						message: "Error",
-						errors: "Invalid Password!"
-					});
-				}
+		return User.findOne({
+			where: {
+				id: req.body.id
+			}
+		}).then(user => {
+			// console.log('Hasil pencarian pengguna:', user);
 
-				var token = 'Bearer ' + jwt.sign({
-					id: user.id
-				}, config.secret, {
-					expiresIn: 86400 //24h expired
-				});
-
-				res.status(200).send({
-					auth: true,
-					id: req.body.id,
-					accessToken: token,
-					message: "Error",
-					errors: null
-				});
-			}).catch(err => {
-				res.status(500).send({
+			if (!user) {
+				return res.status(404).send({
 					auth: false,
 					id: req.body.id,
 					accessToken: null,
 					message: "Error",
-					errors: err
+					errors: "User Not Found."
 				});
+			}
+
+			var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+			// console.log('Verifikasi password berhasil:', passwordIsValid);
+
+			if (!passwordIsValid) {
+				return res.status(401).send({
+					auth: false,
+					id: req.body.id,
+					accessToken: null,
+					message: "Error",
+					errors: "Invalid Password!"
+				});
+			}
+
+			var token = 'Bearer ' + jwt.sign({
+				id: user.id
+			}, config.secret, {
+				expiresIn: 86400 //24h expired
 			});
+
+			// console.log('Token JWT yang dihasilkan:', token);
+
+			res.status(200).send({
+				auth: true,
+				id: req.body.id,
+				accessToken: token,
+				message: "Error",
+				errors: null
+			});
+		}).catch(err => {
+			// console.log('Error saat mencari pengguna:', err);
+
+			res.status(500).send({
+				auth: false,
+				id: req.body.id,
+				accessToken: null,
+				message: "Error",
+				errors: err
+			});
+		});
 	}
 }

@@ -35,24 +35,3 @@ app.use((req, res, next) => {
 require('./app/router/router.js')(app);
 
 app.listen(port, () => console.log(title + " run on " + baseUrl));
-
-// db.sequelize.sync().then(() => {
-//     // create_roles();
-// });
-
-// function create_roles() {
-//     db.role.create({
-//         id: 1,
-//         name: "USER"
-//     });
-
-//     db.role.create({
-//         id: 2,
-//         name: "ADMIN"
-//     });
-
-//     db.role.create({
-//         id: 3,
-//         name: "PM"
-//     });
-// }
