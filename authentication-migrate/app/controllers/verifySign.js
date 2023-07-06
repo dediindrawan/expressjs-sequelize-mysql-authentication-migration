@@ -48,14 +48,12 @@ module.exports = {
 	},
 
 	signin(req, res) {
-		// console.log('ID yang diterima:', req.body.id);
 
 		return User.findOne({
 			where: {
 				id: req.body.id
 			}
 		}).then(user => {
-			// console.log('Hasil pencarian pengguna:', user);
 
 			if (!user) {
 				return res.status(404).send({
@@ -68,7 +66,6 @@ module.exports = {
 			}
 
 			var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-			// console.log('Verifikasi password berhasil:', passwordIsValid);
 
 			if (!passwordIsValid) {
 				return res.status(401).send({
@@ -86,8 +83,6 @@ module.exports = {
 				expiresIn: 86400 //24h expired
 			});
 
-			// console.log('Token JWT yang dihasilkan:', token);
-
 			res.status(200).send({
 				auth: true,
 				id: req.body.id,
@@ -96,7 +91,6 @@ module.exports = {
 				errors: null
 			});
 		}).catch(err => {
-			// console.log('Error saat mencari pengguna:', err);
 
 			res.status(500).send({
 				auth: false,
