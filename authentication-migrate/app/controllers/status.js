@@ -1,10 +1,13 @@
+const { v4: uuidv4 } = require('uuid');
 const Status = require('../models').Status;
 
 module.exports = {
 
     getById(req, res) {
+        const id = req.params.id;
+
         return Status
-            .findByPk(req.params.id, {
+            .findByPk(id, {
                 include: [],
             })
             .then((doc) => {
@@ -63,7 +66,7 @@ module.exports = {
                 limit: 10,
                 include: [],
                 where: {
-                    user_id: req.userId,
+                    userId: req.userId,
                 },
                 order: [
                     ['createdAt', 'DESC']
@@ -89,11 +92,14 @@ module.exports = {
     },
 
     add(req, res) {
+        const id = uuidv4(); // Generate a unique identifier
+
         return Status
             .create({
+                id: id, // Assign the generated id
                 title: req.body.title,
                 body: req.body.body,
-                user_id: req.userId,
+                userId: req.userId
             })
             .then((doc) => {
                 const status = {
@@ -112,8 +118,10 @@ module.exports = {
     },
 
     update(req, res) {
+        const id = req.params.id; // Extract the primary key value from URL parameter
+
         return Status
-            .findByPk(req.params.id, {})
+            .findByPk(id) // Use the extracted id in findByPk method
             .then(status => {
                 if (!status) {
                     return res.status(404).send({
@@ -122,7 +130,7 @@ module.exports = {
                     });
                 }
 
-                if (status.user_id !== req.userId) {
+                if (status.userId !== req.userId) {
                     return res.status(403).send({
                         status_response: "Bad Request",
                         errors: "Different User Id",
@@ -132,15 +140,15 @@ module.exports = {
                 return status
                     .update({
                         title: req.body.title || status.title,
-                        body: req.body.body || status.body
+                        body: req.body.body || status.body,
                     })
                     .then((doc) => {
-                        const status = {
+                        const updatedStatus = {
                             status_response: 'OK',
                             status: doc,
                             errors: null
                         }
-                        return res.status(200).send(status);
+                        return res.status(200).send(updatedStatus);
                     })
                     .catch((error) => {
                         res.status(400).send({
@@ -157,9 +165,12 @@ module.exports = {
             });
     },
 
+
     delete(req, res) {
+        const id = req.params.id
+
         return Status
-            .findByPk(req.params.id)
+            .findByPk(id)
             .then(status => {
                 if (!status) {
                     return res.status(400).send({
@@ -168,7 +179,7 @@ module.exports = {
                     });
                 }
 
-                if (status.user_id !== req.userId) {
+                if (status.userId !== req.userId) {
                     return res.status(403).send({
                         status_response: "Bad Request",
                         errors: "Different User Id",
